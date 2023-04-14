@@ -1,2 +1,5 @@
 .vscode/
 bagfiles/
+devel/
+build/
+.catkin_workspace
