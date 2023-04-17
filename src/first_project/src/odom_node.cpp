@@ -3,6 +3,7 @@
 #include <first_project/Odom.h>
 #include <first_project/reset_odom.h>
 #include <geometry_msgs/Quaternion.h>
+#include <tf/transform_broadcaster.h>
 #include "math.h"
 
 const double wheelDistance = 2.8;
@@ -16,9 +17,9 @@ ros::Publisher customOdometryPublisher;
 
 bool resetOdom(first_project::reset_odom::Request  &req, first_project::reset_odom::Response &res) {
 
-    x = 0.0;
-    y = 0.0;
-    theta = 0.0;
+    ros::param::get("starting_x", x);
+    ros::param::get("starting_y", y);
+    ros::param::get("starting_th", theta);
 
     res.resetted = true;
 
@@ -26,13 +27,20 @@ bool resetOdom(first_project::reset_odom::Request  &req, first_project::reset_od
 }
 
 void calculateOdometry(const geometry_msgs::Quaternion::ConstPtr &data){
+    
+    double timeSpan;
     double r, w;
+    first_project::Odom customOdMsg;
+    nav_msgs::Odometry odMsg;
+    ros::Time currentTime;
+    /* tf variables */
+    static tf::TransformBroadcaster br;
+    tf::Transform transform;
+    tf::Quaternion q;
 
     w = data->x * (tan(data->y)/ wheelDistance);
-
-
-    double timeSpan;
-    ros::Time currentTime = ros::Time::now();
+    
+    currentTime = ros::Time::now();
     
     timeSpan =  currentTime.toSec() - lastStamp.toSec();
 
@@ -46,21 +54,31 @@ void calculateOdometry(const geometry_msgs::Quaternion::ConstPtr &data){
     theta+=w*timeSpan;
     ROS_INFO("odometry: x=%f , y=%f, theta=%f",x,y,theta);
 
-    nav_msgs::Odometry odMsg;
+
+    /* tf publishing */
+    
+    transform.setOrigin( tf::Vector3(x, y, 0.0) );
+    
+    q.setRPY(0, 0, theta);
+    transform.setRotation(q);
+    br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", "base_link"));
+
+    /* standard odom message */    
 
     odMsg.pose.pose.position.x = x;
     odMsg.pose.pose.position.y = y;
     odMsg.pose.pose.orientation.w = theta;
 
-    first_project::Odom customOdMsg;
-
+    /* custom odom message */
     customOdMsg.th = theta;
     customOdMsg.x = x;
     customOdMsg.y = y;
     customOdMsg.timestamp = std::to_string(currentTime.toSec());
 
+    /* publishing messages */
     odometryPublisher.publish(odMsg);
     customOdometryPublisher.publish(customOdMsg);
+    ROS_INFO("messages have been published!");
 }
 
 int main(int argc, char *argv[])
@@ -69,6 +87,12 @@ int main(int argc, char *argv[])
 	ros::init(argc, argv, "odom_node");
     ROS_INFO("init odom_node done!");
     ros::NodeHandle n;
+
+    /* gets starting parameters */
+    ros::param::get("starting_x", x);
+    ros::param::get("starting_y", y);
+    ros::param::get("starting_th", theta);
+
 
     odometryPublisher = n.advertise<nav_msgs::Odometry>("odometry", 1000);
     customOdometryPublisher = n.advertise<first_project::Odom>("custom_odometry", 1000);

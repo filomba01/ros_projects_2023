@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   message_generation
+  tf
 )
 
 ## System dependencies are found with CMake's conventions
@@ -104,7 +105,7 @@ add_message_files(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES first_project
- CATKIN_DEPENDS message_runtime
+ CATKIN_DEPENDS message_runtime tf
 #  DEPENDS system_lib
 )
 
@@ -204,4 +205,4 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 add_executable(odom_node src/odom_node.cpp) 
-target_link_libraries(odom_node ${catkin_LIBRARIES})
+target_link_libraries(odom_node ${catkin_LIBRARIES} tf)
