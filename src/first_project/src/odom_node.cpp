@@ -17,10 +17,10 @@ ros::Publisher customOdometryPublisher;
 
 bool resetOdom(first_project::reset_odom::Request  &req, first_project::reset_odom::Response &res) {
 
-    ros::param::get("starting_x", x);
-    ros::param::get("starting_y", y);
-    ros::param::get("starting_th", theta);
-
+    x = 0.0;
+    y = 0.0;
+    theta = 0.0;
+    
     res.resetted = true;
 
     return true;
@@ -49,9 +49,9 @@ void calculateOdometry(const geometry_msgs::Quaternion::ConstPtr &data){
     lastStamp = currentTime;
     
     //runge-kutta integration
-    x+=data->x*timeSpan*cos(theta+(w*timeSpan)/2);
-    y+=data->x*timeSpan*sin(theta+(w*timeSpan)/2);
-    theta+=w*timeSpan;
+    x += data->x * timeSpan * cos(theta+(w*timeSpan)/2);
+    y += data->x * timeSpan * sin(theta+(w*timeSpan)/2);
+    theta += w * timeSpan;
     ROS_INFO("odometry: x=%f , y=%f, theta=%f",x,y,theta);
 
 
@@ -92,14 +92,21 @@ int main(int argc, char *argv[])
     ros::param::get("starting_x", x);
     ros::param::get("starting_y", y);
     ros::param::get("starting_th", theta);
-
+    ROS_INFO("x: %f", x);
+    ROS_INFO("y: %f", y);
+    ROS_INFO("theta: %f", theta);
 
     odometryPublisher = n.advertise<nav_msgs::Odometry>("odometry", 1000);
     customOdometryPublisher = n.advertise<first_project::Odom>("custom_odometry", 1000);
     ROS_INFO("publishers started!");
     ros::ServiceServer service = n.advertiseService("reset_odom", resetOdom);
     ROS_INFO("service reset odom started!");
-    lastStamp = ros::Time::now();
+    
+    do{
+        lastStamp = ros::Time::now();
+    }
+    while(lastStamp == ros::Time(0));
+    
     ros::Subscriber bagReader = n.subscribe<geometry_msgs::Quaternion>("speed_steer", 1000, calculateOdometry);
 
     ros::spin();   

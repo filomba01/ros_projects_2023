@@ -1,15 +1,14 @@
 <launch>
-    <node pkg="first_project" type="odom_node" name="odom_node"/>
-
     <param name="/use_sim_time" value="true"/>
     <param name="starting_x" value="0.0"/>
     <param name="starting_y" value="0.0"/>
     <param name="starting_th" value="0"/>
 
-    <!-- statics tfs -->
-    <node pkg="tf" type="static_transform_publisher" name="front_left_sensor" args="1.85 0.93 0.0 0.81 0.0 3.14 vehicle_centre sick_front_left" />
-    <node pkg="tf" type="static_transform_publisher" name="front_right_sensor" args="1.85 -0.93 0.0 -0.76 0.0 3.14 vehicle_centre sick_front_right" />
-    <node pkg="tf" type="static_transform_publisher" name="sick_rear_left_sensor" args="-1.85 0.93 0.0 2.38 0.0 3.14 vehicle_centre sick_rear_left" />
-    <node pkg="tf" type="static_transform_publisher" name="sick_rear_right_sensor" args="-1.75 -0.8 0.0 -2.30 0.0 3.14 vehicle_centre sick_rear_right" />
+    <node pkg="first_project" type="odom_node" name="odom_node" output="screen"/>
 
+    <!-- statics tfs -->
+    <node pkg="tf" type="static_transform_publisher" name="front_left_sensor" args="1.85 0.93 0.0 0.81 0.0 3.14 base_link sick_front_left 100" />
+    <node pkg="tf" type="static_transform_publisher" name="front_right_sensor" args="1.85 -0.93 0.0 -0.76 0.0 3.14 base_link sick_front_right 100" />
+    <node pkg="tf" type="static_transform_publisher" name="sick_rear_left_sensor" args="-1.85 0.93 0.0 2.38 0.0 3.14 base_link sick_rear_left 100" />
+    <node pkg="tf" type="static_transform_publisher" name="sick_rear_right_sensor" args="-1.75 -0.8 0.0 -2.30 0.0 3.14 base_link sick_rear_right 100" />
 </launch>
