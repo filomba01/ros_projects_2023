@@ -3,3 +3,4 @@ bagfiles/
 devel/
 build/
 .catkin_workspace
+src/CMakeLists.txt
