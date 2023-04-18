@@ -65,9 +65,11 @@ void calculateOdometry(const geometry_msgs::Quaternion::ConstPtr &data){
 
     /* standard odom message */    
 
-    odMsg.pose.pose.position.x = x;
+    geometry_msgs::Quaternion theta_quaternions = tf::createQuaternionMsgFromYaw(theta);
+
+    odMsg.pose.pose.position.x = x; 
     odMsg.pose.pose.position.y = y;
-    odMsg.pose.pose.orientation.w = theta;
+    odMsg.pose.pose.orientation = theta_quaternions;
 
     /* custom odom message */
     customOdMsg.th = theta;
