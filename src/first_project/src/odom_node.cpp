@@ -48,7 +48,7 @@ void calculateOdometry(const geometry_msgs::Quaternion::ConstPtr &data){
         
     lastStamp = currentTime;
     
-    //runge-kutta integration
+    /* runge-kutta integration */
     x += data->x * timeSpan * cos(theta+(w*timeSpan)/2);
     y += data->x * timeSpan * sin(theta+(w*timeSpan)/2);
     theta += w * timeSpan;
@@ -56,7 +56,6 @@ void calculateOdometry(const geometry_msgs::Quaternion::ConstPtr &data){
 
 
     /* tf publishing */
-    
     transform.setOrigin( tf::Vector3(x, y, 0.0) );
     
     q.setRPY(0, 0, theta);
@@ -64,7 +63,6 @@ void calculateOdometry(const geometry_msgs::Quaternion::ConstPtr &data){
     br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "odom", "base_link"));
 
     /* standard odom message */    
-
     geometry_msgs::Quaternion theta_quaternions = tf::createQuaternionMsgFromYaw(theta);
 
     odMsg.pose.pose.position.x = x; 
@@ -107,7 +105,7 @@ int main(int argc, char *argv[])
     do{
         lastStamp = ros::Time::now();
     }
-    while(lastStamp == ros::Time(0));
+    while(!lastStamp.isValid());
     
     ros::Subscriber bagReader = n.subscribe<geometry_msgs::Quaternion>("speed_steer", 1000, calculateOdometry);
 
