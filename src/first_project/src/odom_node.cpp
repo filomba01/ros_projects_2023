@@ -1,10 +1,10 @@
-#include "ros/ros.h"
-#include <nav_msgs/Odometry.h>
-#include <first_project/Odom.h>
-#include <first_project/reset_odom.h>
-#include <geometry_msgs/Quaternion.h>
-#include <tf/transform_broadcaster.h>
-#include "math.h"
+# include "ros/ros.h"
+# include <nav_msgs/Odometry.h>
+# include <first_project/Odom.h>
+# include <first_project/reset_odom.h>
+# include <geometry_msgs/Quaternion.h>
+# include <tf/transform_broadcaster.h>
+# include "math.h"
 
 class Odom_node{
     private:
@@ -17,7 +17,12 @@ class Odom_node{
         ros::NodeHandle n;
         ros::Publisher odometryPublisher;
         ros::Publisher customOdometryPublisher;
-    
+
+        /* tf variables */
+        tf::TransformBroadcaster br;
+        tf::Transform transform;
+        tf::Quaternion q;
+
     public:
 
 
@@ -26,34 +31,31 @@ class Odom_node{
             x = 0.0;
             y = 0.0;
             theta = 0.0;
-            
+
             res.resetted = true;
 
             return true;
         }
 
         void calculateOdometry(const geometry_msgs::Quaternion::ConstPtr &data){
-            
+
             double timeSpan;
             double r, w;
             first_project::Odom customOdMsg;
             nav_msgs::Odometry odMsg;
             ros::Time currentTime;
-            /* tf variables */
-            tf::TransformBroadcaster br;
-            tf::Transform transform;
-            tf::Quaternion q;
+            
 
             w = data->x * (tan(data->y)/ wheelDistance);
-            
+
             currentTime = ros::Time::now();
-            
+
             timeSpan =  currentTime.toSec() - lastStamp.toSec();
 
             ROS_INFO("current time: %f last time=%f delta=%f",currentTime.toSec(),lastStamp.toSec(),timeSpan);
-                
+
             lastStamp = currentTime;
-            
+
             /* runge-kutta integration */
             x += data->x * timeSpan * cos(theta+(w*timeSpan)/2);
             y += data->x * timeSpan * sin(theta+(w*timeSpan)/2);
@@ -63,15 +65,15 @@ class Odom_node{
 
             /* tf publishing */
             transform.setOrigin( tf::Vector3(x, y, 0.0) );
-            
+
             q.setRPY(0, 0, theta);
             transform.setRotation(q);
             br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "odom", "base_link"));
 
-            /* standard odom message */    
+            /* standard odom message */
             geometry_msgs::Quaternion theta_quaternions = tf::createQuaternionMsgFromYaw(theta);
 
-            odMsg.pose.pose.position.x = x; 
+            odMsg.pose.pose.position.x = x;
             odMsg.pose.pose.position.y = y;
             odMsg.pose.pose.orientation = theta_quaternions;
 
@@ -90,7 +92,7 @@ class Odom_node{
 
 
         void init(){
-            
+
             /* gets starting parameters */
             ros::param::get("starting_x", x);
             ros::param::get("starting_y", y);
@@ -104,13 +106,14 @@ class Odom_node{
             ROS_INFO("publishers started!");
             ros::ServiceServer service = n.advertiseService("reset_odom", &Odom_node::resetOdom, this);
             ROS_INFO("service reset odom started!");
-            
+
             do{
                 lastStamp = ros::Time::now();
             }
             while(!lastStamp.isValid());
-            
+
             ros::Subscriber bagReader = n.subscribe<geometry_msgs::Quaternion>("speed_steer", 1000, &Odom_node::calculateOdometry,this);
+            ros::spin();
         }
 
 
@@ -118,19 +121,19 @@ class Odom_node{
 
 
 int main(int argc, char *argv[]){
-    
-    
-    
-	ros::init(argc, argv, "odom_node");
-    
-    
+
+
+
+    ros::init(argc, argv, "odom_node");
+
+
     Odom_node odom_node;
 
     odom_node.init();
     ROS_INFO("init odom_node done!");
 
-    
 
-    ros::spin();   
+
+    //ros::spin();
     return 0;
 }
