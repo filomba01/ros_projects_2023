@@ -43,7 +43,7 @@ class Odom_node{
 
             /* publishing messages */
             customOdometryPublisher.publish(customOdMsg);
-            ROS_INFO("custom message have been published!");
+            ROS_INFO("custom message has been published!");
         }
 
         void publish_odom_message(){
@@ -59,7 +59,7 @@ class Odom_node{
             odMsg.child_frame_id = "base_link";
 
             odometryPublisher.publish(odMsg);
-            ROS_INFO("odom message have been published!");
+            ROS_INFO("odom message has been published!");
         }
 
     public:
@@ -148,18 +148,12 @@ class Odom_node{
 
 int main(int argc, char *argv[]){
 
-
-
     ros::init(argc, argv, "odom_node");
-
 
     Odom_node odom_node;
 
     odom_node.init();
     ROS_INFO("init odom_node done!");
 
-
-
-    //ros::spin();
     return 0;
 }
