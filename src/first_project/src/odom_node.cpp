@@ -23,6 +23,45 @@ class Odom_node{
         tf::Transform transform;
         tf::Quaternion q;
 
+    
+        void publish_tf(){
+            /* tf publishing */
+            transform.setOrigin( tf::Vector3(x, y, 0.0) );
+
+            q.setRPY(0, 0, theta);
+            transform.setRotation(q);
+            br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "odom", "base_link"));
+        }
+
+        void publish_custom_odom_message(ros::Time currentTime){
+            first_project::Odom customOdMsg;
+            /* custom odom message */
+            customOdMsg.th = theta;
+            customOdMsg.x = x;
+            customOdMsg.y = y;
+            customOdMsg.timestamp = std::to_string(currentTime.toSec());
+
+            /* publishing messages */
+            customOdometryPublisher.publish(customOdMsg);
+            ROS_INFO("custom message have been published!");
+        }
+
+        void publish_odom_message(){
+            nav_msgs::Odometry odMsg;
+
+            /* standard odom message */
+            geometry_msgs::Quaternion theta_quaternions = tf::createQuaternionMsgFromYaw(theta);
+
+            odMsg.pose.pose.position.x = x;
+            odMsg.pose.pose.position.y = y;
+            odMsg.pose.pose.orientation = theta_quaternions;
+            odMsg.header.frame_id = "odom";
+            odMsg.child_frame_id = "base_link";
+
+            odometryPublisher.publish(odMsg);
+            ROS_INFO("odom message have been published!");
+        }
+
     public:
 
 
@@ -41,8 +80,7 @@ class Odom_node{
 
             double timeSpan;
             double r, w;
-            first_project::Odom customOdMsg;
-            nav_msgs::Odometry odMsg;
+            double old_theta;
             ros::Time currentTime;
             
 
@@ -55,38 +93,26 @@ class Odom_node{
             ROS_INFO("current time: %f last time=%f delta=%f",currentTime.toSec(),lastStamp.toSec(),timeSpan);
 
             lastStamp = currentTime;
-
-            /* runge-kutta integration */
-            x += data->x * timeSpan * cos(theta+(w*timeSpan)/2);
-            y += data->x * timeSpan * sin(theta+(w*timeSpan)/2);
-            theta += w * timeSpan;
+            
+            if(w == 0){
+                /* runge-kutta integration */
+                x += data->x * timeSpan * cos(theta+(w*timeSpan)/2);
+                y += data->x * timeSpan * sin(theta+(w*timeSpan)/2);
+                theta += w * timeSpan;
+            } else {
+                old_theta = theta;
+                theta += w * timeSpan;
+                x+= (data->x /w)*(sin(theta)-sin(old_theta));
+                y-= (data->x/w)*(cos(theta)-cos(old_theta));
+            }
             ROS_INFO("odometry: x=%f , y=%f, theta=%f",x,y,theta);
 
 
-            /* tf publishing */
-            transform.setOrigin( tf::Vector3(x, y, 0.0) );
+            publish_tf();
 
-            q.setRPY(0, 0, theta);
-            transform.setRotation(q);
-            br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "odom", "base_link"));
+            publish_odom_message();
 
-            /* standard odom message */
-            geometry_msgs::Quaternion theta_quaternions = tf::createQuaternionMsgFromYaw(theta);
-
-            odMsg.pose.pose.position.x = x;
-            odMsg.pose.pose.position.y = y;
-            odMsg.pose.pose.orientation = theta_quaternions;
-
-            /* custom odom message */
-            customOdMsg.th = theta;
-            customOdMsg.x = x;
-            customOdMsg.y = y;
-            customOdMsg.timestamp = std::to_string(currentTime.toSec());
-
-            /* publishing messages */
-            odometryPublisher.publish(odMsg);
-            customOdometryPublisher.publish(customOdMsg);
-            ROS_INFO("messages have been published!");
+            publish_custom_odom_message(currentTime);
         }
 
 
