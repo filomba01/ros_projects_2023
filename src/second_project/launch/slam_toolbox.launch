@@ -1,7 +1,12 @@
 <launch>  
+  <param name="/use_sim_time" value="true"/>
    <!--  static tfs  -->  
-  <node pkg="tf2_ros" type="static_transform_publisher" name="base_laser"  args=" 0  0 0  0 0 0 1 base_link base_laser_link "/>
+  <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="base_laser"  args=" 0  0 0  0 0 0 1 base_link base_laser_link "/>-->
+  <!--<node pkg="tf2_ros" type="static_transform_publisher" name="base_link"  args=" 0  0 0  0 0 0 1 base_footprint base_link"/> -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="scan"  args=" 0  0 0  0 0 0 1 t265 scan"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="laser"  args=" 0  0 0  0 0 0 1 t265 base_footprint"/>
 
+  <node pkg="second_project" type="tf_publisher" name="tf_publisher" output="screen"/>
   <node pkg="slam_toolbox" type="async_slam_toolbox_node" name="slam_toolbox" output="screen">
     <rosparam command="load" file="$(find second_project)/config/slam_toolbox_param.yaml" />
   </node>
