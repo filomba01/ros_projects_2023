@@ -1,0 +1,24 @@
+<launch>  
+  <param name="/use_sim_time" value="true"/>
+
+  <node pkg="tf2_ros" type="static_transform_publisher" name="base_footprint"  args=" 0  0 0  0 0 0 1 t265 base_footprint"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="base_link"  args=" 0  0 0  0 0 0 1 base_footprint base_link"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="base_laser"  args=" 0  0 0  0 0 0 1 base_link base_laser_link "/>
+   
+  <node pkg="pointcloud_to_laserscan" type="pointcloud_to_laserscan_node" name="pointcloud_to_laserscan" output="screen">
+        <remap from="cloud_in" to="/velodyne_points"/>
+        <remap from="scan" to="/scan_converted"/>
+        <param name="min_height" value="0.1"/>
+        <param name="max_height" value="0.5"/>
+        <param name="angle_increment" value="0.004"/>
+        <param name="range_max" value="20.0"/>
+    </node>
+  <node pkg="slam_toolbox" type="async_slam_toolbox_node" name="slam_toolbox" output="screen">
+    <rosparam command="load" file="$(find second_project)/config/slam_config_3D.yaml" />
+  </node>
+
+  <node pkg="second_project" type="tf_publisher" name="tf_publisher" output="screen"/>
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find second_project)/rviz/config.rviz"/>
+
+</launch>

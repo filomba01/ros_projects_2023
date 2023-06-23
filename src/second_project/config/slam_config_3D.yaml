@@ -10,7 +10,7 @@ ceres_loss_function: None
 odom_frame: t265
 map_frame: map
 base_frame: base_link
-scan_topic: /scan
+scan_topic: /scan_converted
 mode: mapping 
 
 # if you'd like to immediately start continuing a map at a given pose
