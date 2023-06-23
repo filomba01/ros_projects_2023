@@ -12,7 +12,8 @@ find_package(catkin REQUIRED COMPONENTS
     std_msgs
     sensor_msgs
     nav_msgs
-    tf     
+    tf
+    move_base_msgs     
 )
 
 ## System dependencies are found with CMake's conventions
@@ -208,4 +209,5 @@ include_directories(
 # catkin_add_nosetests(test)
 
 add_executable(tf_publisher src/tf_publisher.cpp) 
+add_executable(navigation src/navigation.cpp) 
 target_link_libraries(tf_publisher ${catkin_LIBRARIES})
