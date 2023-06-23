@@ -1,0 +1,45 @@
+TebLocalPlannerROS:
+
+  odom_topic: odom
+  map_frame: /map
+
+  # Trajectory
+
+  teb_autosize: True
+  dt_ref: 0.3
+  dt_hysteresis: 0.1
+  global_plan_overwrite_orientation: True
+  max_global_plan_lookahead_dist: 3.0
+  feasibility_check_no_poses: 5
+
+  # Robot
+
+  max_vel_x: 0.5  # max forward velocity
+  max_vel_x_backwards: 0.2  # max backwards velocity
+  max_vel_y: 0.0  # max y velocity for diff drive robot
+  max_vel_theta: 1.0  # max angular velocity
+  acc_lim_x: 0.3  # forward acceleration limit
+  acc_lim_theta: 0.3  # angular acceleration limit
+  acc_lim_y: 0.0  # y acceleration limit for diff drive robot
+
+  # GoalTolerance
+
+  xy_goal_tolerance: 0.2
+  yaw_goal_tolerance: 0.1
+  free_goal_vel: False
+
+  # Footprint model (Square - .2m side length)
+  
+  footprint_model:
+    type: "polygon"
+    vertices: [[0.1, 0.1], [-0.1, 0.1], [-0.1, -0.1], [0.1, -0.1]]  # replace these with your robot's dimensions
+
+  # Obstace avoidance
+  min_obstacle_dist: 0.2  # this is the minimum distance from obstacles, change it as needed.
+  include_costmap_obstacles: True
+  costmap_obstacles_behind_robot_dist: 1.0
+  obstacle_poses_affected: 30
+  costmap_converter_plugin: ""
+  costmap_converter_spin_thread: True
+  costmap_converter_rate: 5
+

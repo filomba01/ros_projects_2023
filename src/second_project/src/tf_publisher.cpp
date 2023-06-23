@@ -27,7 +27,7 @@ class Tf_publisher{
             transform.setOrigin( tf::Vector3(x, y, 0.0) );
 
             transform.setRotation(q);
-            br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), data->header.frame_id, "base_link"));
+            br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), data->header.frame_id, "base_footprint"));
         }
 
         void init(){
