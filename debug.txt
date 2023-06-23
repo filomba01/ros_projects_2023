@@ -1,0 +1,27 @@
+[  0%] Built target std_msgs_generate_messages_py
+[  0%] Built target std_msgs_generate_messages_nodejs
+[  0%] Built target std_msgs_generate_messages_cpp
+[  0%] Built target std_msgs_generate_messages_eus
+[  0%] Built target std_msgs_generate_messages_lisp
+[ 10%] Built target odom_node
+[ 15%] Linking CXX executable /home/filippo/robotics/devel/lib/second_project/navigation
+[ 15%] Built target _first_project_generate_messages_check_deps_Odom
+[ 26%] Built target tf_publisher
+[ 26%] Built target _first_project_generate_messages_check_deps_reset_odom
+[ 52%] Built target first_project_generate_messages_eus
+[ 52%] Built target first_project_generate_messages_nodejs
+[ 84%] Built target first_project_generate_messages_lisp
+[ 89%] Built target first_project_generate_messages_py
+[ 94%] Built target first_project_generate_messages_cpp
+[ 94%] Built target first_project_generate_messages
+Base path: /home/filippo/robotics
+Source space: /home/filippo/robotics/src
+Build space: /home/filippo/robotics/build
+Devel space: /home/filippo/robotics/devel
+Install space: /home/filippo/robotics/install
+####
+#### Running command: "make cmake_check_build_system" in "/home/filippo/robotics/build"
+####
+####
+#### Running command: "make -j8 -l8" in "/home/filippo/robotics/build"
+####

@@ -15,6 +15,9 @@
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
 class Navigation{
     private:
+
+        ros::NodeHandle n;
+
         void move_to_goal(double x, double y, double tetha){
             ros::NodeHandle nh;
             MoveBaseClient client("move_base", true);
