@@ -90,7 +90,7 @@ find_package(catkin REQUIRED COMPONENTS
 ##   * uncomment the "generate_dynamic_reconfigure_options" section below
 ##     and list every .cfg file to be processed
 
-## Generate dynamic reconfigure parameters in the 'cfg' folder
+## Generate dynamic reconfigure parametesimple_nav_exrs in the 'cfg' folder
 # generate_dynamic_reconfigure_options(
 #   cfg/DynReconf1.cfg
 #   cfg/DynReconf2.cfg
@@ -208,7 +208,9 @@ include_directories(
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
 
-add_executable(tf_publisher src/tf_publisher.cpp) 
+add_executable(tf_publisher src/tf_publisher.cpp)
+add_executable(simple_nav_ex src/simple_nav_ex.cpp) 
 add_executable(navigation src/navigation.cpp) 
 target_link_libraries(tf_publisher ${catkin_LIBRARIES})
 target_link_libraries(navigation ${catkin_LIBRARIES})
+target_link_libraries(simple_nav_ex ${catkin_LIBRARIES})

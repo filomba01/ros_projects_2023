@@ -1,0 +1,59 @@
+
+<launch>
+  <param name="/use_sim_time" value="true"/>
+  <param name="waypoint_file" value="$(find second_project)/waypoints.csv"/>
+
+  <!-- Name of the map to use and initial position -->
+  <arg name="map_file"       default="$(find second_project)/map_raw/resolution002_mapUpdateInterval3/2d_bag1.yaml"/> <!-- robopark_plan -->
+  <arg name="world_file"     default="$(find second_project)/stage/maze.world"/> 
+  <arg name="initial_pose_x" default="0.0"/>
+  <arg name="initial_pose_y" default="0.0"/>
+  <arg name="initial_pose_a" default="0.0"/>
+
+  <arg name="odom_frame_id"   default="odom"/>
+  <arg name="global_frame_id" default="map"/>
+
+  <param name="/use_sim_time" value="true"/>
+	
+
+  <!-- ***************** Robot simulation *****************  -->
+  <node pkg="stage_ros" type="stageros" name="stageros" args="$(arg world_file)">
+    <param name="base_watchdog_timeout" value="0.5"/>
+    <remap from="base_scan" to="scan"/>
+  </node>
+
+
+  <!--  ****** Maps *****  -->
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
+    <param name="frame_id" value="map"/>
+  </node>
+
+
+  <!-- ******* Move Base ***** -->
+  <include file="$(find second_project)/launch/move_base.launch.xml">
+
+  </include>
+
+
+
+  <!--  ****** amcl *****  -->
+  <include file="$(find second_project)/launch/amcl.launch.xml">
+    <arg name="scan_topic" value="scan"/>
+    <arg name="use_map_topic" value="true"/>
+    <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+    <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+    <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+  </include>
+  
+ 
+
+   <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_tf"  args=" 0  0 0  0 0 0 1 base_footprint base_link"/>
+   <node pkg="tf2_ros" type="static_transform_publisher" name="base_laser_tf"  args=" 0  0 0  0 0 0 1 base_link base_laser_link "/>
+   
+   
+   <node pkg="second_project" type="navigation" name="simple_nav_ex" output="screen"/>	
+ 
+  <!--  **************** Visualisation ****************  -->
+   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find second_project)/rviz/robot_navigation.rviz"/> 
+
+</launch>
