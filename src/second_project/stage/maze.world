@@ -21,24 +21,23 @@ interval_sim 100  # simulation timestep in milliseconds
 
 window
 (
-  size [ 600.0 700.0 ]
+  size [ 800.0 800.0 ]
   center [ 0.0 0.0 ]
   rotate [ 0.0 0.0 ]
-  scale 60
 )
 
 floorplan
 (
   name "maze"
-  bitmap "../map_raw/resolution002_mapUpdateInterval3/2d_bag1.pgm"
-  size [ 10.0 10.0 2.0 ]
-  pose [  5.0  5.0 0.0 0.0 ]
+  bitmap "../map_raw/resolution002_mapUpdateInterval3/3d_bag1.pgm"
+  size [ 18.78 31.0 0.0 ]
+  pose [ 0.457634 9.751276 0.0 0.0 ]
 )
 
 # throw in a robot
 turtlebot
 (
-  pose [ 2.0 2.0 0.0 0.0 ]
-  name "turtlebot"
-  color "black"
+  pose [ 0.0 0.0 0.0 0.0 ]
+  name "mariano"
+  color "red"
 )

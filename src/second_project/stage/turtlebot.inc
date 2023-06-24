@@ -1,10 +1,10 @@
-define kinect ranger
+define laser ranger
 (
   sensor
   (
     fov 360.0
     samples 640
-    range [0.2 10]
+    range [0.2 12]
   )
   # generic model properties
   color "black"
@@ -17,7 +17,7 @@ define turtlebot position
   
   localization "odom"
 
-  odom_error [0.0 0.0  0.00  0.0]
+  odom_error [0.1 0.1 0.1 0.1 0.1 0.1]
 
   size [ 0.20 0.20 0.40 ]
   origin [ 0.0 0.0 0.0 0.0 ]
@@ -25,5 +25,5 @@ define turtlebot position
   drive "diff"
   color "gray"
   
-  kinect(pose [ -0.1 0.0 -0.11 0.0 ])
+  laser(pose [ 0.0 0.0 0.0 0.0 ])
 )

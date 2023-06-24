@@ -31,7 +31,7 @@ class Navigation{
 	    }
 
             move_base_msgs::MoveBaseGoal goal;
-   	    ROS_INFO("Server Ready!");
+   	        ROS_INFO("Server Ready!");
             goal.target_pose.header.frame_id = "base_link"; 
             goal.target_pose.header.stamp = ros::Time::now(); 
             goal.target_pose.pose.position.x = x;    
@@ -67,7 +67,7 @@ class Navigation{
 
                     std::ifstream file(filename);
                     std::string line;
-		    ROS_INFO("searching waypoints!");
+		            ROS_INFO("searching waypoints!");
                     if (!file.is_open())
                     {
                         ROS_INFO("Waypoint file is missing!");
@@ -80,12 +80,12 @@ class Navigation{
                         std::vector<std::string> row;
                         std::stringstream ss(line);
                         std::string cell;
-			ROS_INFO("computing waypoints!");
+			            ROS_INFO("computing waypoints!");
                         while (std::getline(ss, cell, ','))
                         {
                             row.push_back(cell);
                         }
-			ROS_INFO("GOAL to be reached: X: %f , Y: %f, W: %f",std::stod(row.at(X_POS)), std::stod(row.at(Y_POS)), std::stod(row.at(W_POS)));
+			            ROS_INFO("GOAL to be reached: X: %f , Y: %f, W: %f",std::stod(row.at(X_POS)), std::stod(row.at(Y_POS)), std::stod(row.at(W_POS)));
                         this->move_to_goal(std::stod(row.at(X_POS)),std::stod(row.at(Y_POS)),std::stod(row.at(W_POS)));
 
                     }
