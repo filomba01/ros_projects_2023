@@ -1,14 +1,11 @@
 
 <launch>
+  <param name="/use_sim_time" value="true"/>
   <param name="waypoint_file" value="$(find second_project)/waypoints.csv"/>
-  <!--
-  <arg name="base"       default="kobuki"/>  < create_circles_asus_xtion_pro create_circles_kinect kobuki_hexagons_astra kobuki_hexagons_asus_xtion_pro kobuki_hexagons_asus_xtion_pro 
-kobuki_hexagons_kinect kobuki_hexagons_r200 roomba_circles_asus_xtion_pro roomba_circles_kinect >
-  <arg name="stacks"     default="hexagons"/>  
-  <arg name="3d_sensor"  default="astra"/>  -->  
+
   <!-- Name of the map to use and initial position -->
-  <arg name="map_file"       default="$(find second_project)/stage/map_3D_2.yaml"/> <!-- robopark_plan -->
-  <arg name="world_file"     default="$(find second_project)/stage/map_3D_2.pgm"/>
+  <arg name="map_file"       default="$(find second_project)/map_raw/resolution002_mapUpdateInterval3/2d_bag1.yaml"/> <!-- robopark_plan -->
+ <!-- <arg name="world_file"     default="$(find second_project)/map_raw/resolution002_mapUpdateInterval3/2d_bag1.pgm"/> -->
   <arg name="initial_pose_x" default="2.0"/>
   <arg name="initial_pose_y" default="2.0"/>
   <arg name="initial_pose_a" default="0.0"/>
@@ -17,37 +14,14 @@ kobuki_hexagons_kinect kobuki_hexagons_r200 roomba_circles_asus_xtion_pro roomba
   <arg name="global_frame_id" default="map"/>
 
   <param name="/use_sim_time" value="true"/>
+	
 
-
- <!--  ***************** Robot simulation *****************  -->
+ <!--  ***************** Robot simulation ***************** 
   <node pkg="stage_ros" type="stageros" name="stageros" args="$(arg world_file)">
     <param name="base_watchdog_timeout" value="0.5"/>
     <remap from="base_scan" to="scan"/>
   </node>
-
-
-  <!--  ************** Navigation  ***************  -->
-   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-    <rosparam file="$(find second_project)/cfg/costmap_common_params.yaml" command="load" ns="global_costmap" />
-    <rosparam file="$(find second_project)/cfg/costmap_common_params.yaml" command="load" ns="local_costmap" />   
-    <rosparam file="$(find second_project)/cfg/local_costmap_params.yaml" command="load" />   
-    <rosparam file="$(find second_project)/cfg/global_costmap_params.yaml" command="load" />
-    <rosparam file="$(find second_project)/cfg/teb_local_planner_params.yaml" command="load" />
-    <rosparam file="$(find second_project)/cfg/move_base_params.yaml" command="load" /> 
-
-    <param name="base_global_planner" value="global_planner/GlobalPlanner" />  <!--   planner  navfn/NavfnROS alternative  carrot_planner/CarrotPlanner -->
-    <param name="planner_frequency" value="1.0" />
-    <param name="planner_patience" value="5.0" /> 
-    <param name="use_dijkstra" value="false" />
-
-    <!--param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" /-->
-    <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
-    <param name="controller_frequency" value="5.0" />
-    <param name="controller_patience" value="5.0" /> <!-- How long the controller will wait in seconds without receiving a valid control before space-clearing operations are performed.  -->
-
-    <param name="clearing_rotation_allowed" value="true"/> 
-  </node>
-
+-->
 
   <!--  ****** Maps *****  -->
   <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
@@ -55,8 +29,15 @@ kobuki_hexagons_kinect kobuki_hexagons_r200 roomba_circles_asus_xtion_pro roomba
   </node>
 
 
+  <!-- ******* Move Base ***** -->
+  <include file="$(find second_project)/launch/move_base.launch">
+
+  </include>
+
+
+
   <!--  ****** amcl *****  -->
-  <include file="$(find second_project)/launch/amcl.launch.xml">
+  <include file="$(find second_project)/launch/amcl.launch">
     <arg name="scan_topic" value="scan"/>
     <arg name="use_map_topic" value="true"/>
     <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
@@ -64,11 +45,15 @@ kobuki_hexagons_kinect kobuki_hexagons_r200 roomba_circles_asus_xtion_pro roomba
     <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
   </include>
   
-  <node pkg="second_project" type="navigation" name="navigation" output="screen"/>
+ 
 
-  <node pkg="tf2_ros" type="static_transform_publisher" name="base_link"  args=" 0  0 0  0 0 0 1 base_footprint base_link"/>
-  <node pkg="tf2_ros" type="static_transform_publisher" name="base_laser"  args=" 0  0 0  0 0 0 1 base_link base_laser_link "/>
-  
+   <!--	<node pkg="tf2_ros" type="static_transform_publisher" name="base_link"  args=" 0  0 0  0 0 0 1 base_footprint base_link"/>
+ 	 <node pkg="tf2_ros" type="static_transform_publisher" name="base_laser"  args=" 0  0 0  0 0 0 1 base_link base_laser_link "/>-->
+   
+   
+   <node pkg="second_project" type="navigation" name="navigation" output="screen"/>	
+ 
   <!--  **************** Visualisation ****************  -->
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find second_project)/rviz/robot_navigation.rviz"/>
+   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find second_project)/rviz/robot_navigation.rviz"/> 
+
 </launch>
