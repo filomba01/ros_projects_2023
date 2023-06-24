@@ -1,0 +1,7 @@
+image: 3d_bag1.pgm
+resolution: 0.010000
+origin: [-8.782967, -5.848696, 0.000000]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.196
+
