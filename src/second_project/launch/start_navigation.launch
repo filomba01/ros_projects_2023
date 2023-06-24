@@ -1,14 +1,14 @@
 
 <launch>
-  <param name="waypoint_file" value="waypoints.csv"/>
+  <param name="waypoint_file" value="$(find second_project)/waypoints.csv"/>
   <!--
   <arg name="base"       default="kobuki"/>  < create_circles_asus_xtion_pro create_circles_kinect kobuki_hexagons_astra kobuki_hexagons_asus_xtion_pro kobuki_hexagons_asus_xtion_pro 
-kobuki_hexagons_kinect kobuki_hexagons_r200 roomba_circles_asus_xtion_pro roomba_circles_kinect -->
+kobuki_hexagons_kinect kobuki_hexagons_r200 roomba_circles_asus_xtion_pro roomba_circles_kinect >
   <arg name="stacks"     default="hexagons"/>  
   <arg name="3d_sensor"  default="astra"/>  -->  
   <!-- Name of the map to use and initial position -->
-  <arg name="map_file"       default="$(find nav2d_conf)/maps/maze.yaml"/> <!-- robopark_plan -->
-  <arg name="world_file"     default="$(find nav2d_conf)/maps/stage/maze.world"/>
+  <arg name="map_file"       default="$(find second_project)/stage/map_3D_2.yaml"/> <!-- robopark_plan -->
+  <arg name="world_file"     default="$(find second_project)/stage/map_3D_2.pgm"/>
   <arg name="initial_pose_x" default="2.0"/>
   <arg name="initial_pose_y" default="2.0"/>
   <arg name="initial_pose_a" default="0.0"/>
