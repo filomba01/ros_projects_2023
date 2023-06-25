@@ -11,10 +11,7 @@
   <arg name="initial_pose_a" default="0.0"/>
 
   <arg name="odom_frame_id"   default="odom"/>
-  <arg name="global_frame_id" default="map"/>
-
-  <param name="/use_sim_time" value="true"/>
-	
+  <arg name="global_frame_id" default="map"/>	
 
   <!-- ***************** Robot simulation ***************** -->
   <node pkg="stage_ros" type="stageros" name="stageros" args="$(arg world_file)">

@@ -30,7 +30,7 @@ floorplan
 (
   name "maze"
   bitmap "../map_raw/resolution002_mapUpdateInterval3/3d_bag1.pgm"
-  size [ 18.78 31.0 0.0 ]
+  size [ 18.78 31.0 2.0 ]
   pose [ 0.457634 9.751276 0.0 0.0 ]
 )
 

@@ -4,7 +4,7 @@ define laser ranger
   (
     fov 360.0
     samples 640
-    range [0.2 12]
+    range [0.2 20]
   )
   # generic model properties
   color "black"
