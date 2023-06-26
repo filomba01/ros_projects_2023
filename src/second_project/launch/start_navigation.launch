@@ -5,7 +5,7 @@
 
   <!-- Name of the map to use and initial position -->
   <arg name="map_file"       default="$(find second_project)/map_raw/resolution002_mapUpdateInterval3/3d_bag1.yaml"/> <!-- robopark_plan -->
-  <arg name="world_file"     default="$(find second_project)/stage/maze.world"/> 
+  <arg name="world_file"     default="$(find second_project)/stage/map.world"/> 
   <arg name="initial_pose_x" default="0.0"/>
   <arg name="initial_pose_y" default="0.0"/>
   <arg name="initial_pose_a" default="0.0"/>

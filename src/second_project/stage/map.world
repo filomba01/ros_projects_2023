@@ -1,4 +1,4 @@
-include "turtlebot.inc"
+include "robot.inc"
 
 define floorplan model
 (
@@ -14,6 +14,7 @@ define floorplan model
   gripper_return 0
   fiducial_return 0
   laser_return 1
+
 )
 
 resolution 0.02

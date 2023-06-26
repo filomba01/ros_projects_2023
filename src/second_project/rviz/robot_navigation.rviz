@@ -7,7 +7,6 @@ Panels:
         - /Global Options1
         - /TF1/Frames1
         - /TF1/Tree1
-        - /Path2
       Splitter Ratio: 0.5
     Tree Height: 628
   - Class: rviz/Selection
@@ -291,7 +290,7 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Scale: 125.587158203125
+      Scale: 93.05293273925781
       Target Frame: base_link
       X: 0.8249914050102234
       Y: 1.2878321409225464
