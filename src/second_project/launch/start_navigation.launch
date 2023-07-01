@@ -42,6 +42,6 @@
   <node pkg="second_project" type="navigation" name="navigation" output="screen"/>	
  
   <!--  **************** Visualisation ****************  -->
-   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find second_project)/rviz/robot_navigation.rviz"/> 
+   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find second_project)/config_nav.rviz"/> 
 
 </launch>

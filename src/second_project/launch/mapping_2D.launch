@@ -1,0 +1,18 @@
+<launch>  
+  <param name="/use_sim_time" value="true"/>
+
+  <node pkg="slam_toolbox" type="async_slam_toolbox_node" name="slam_toolbox" output="screen">
+    <rosparam command="load" file="$(find second_project)/cfg/slam_toolbox_param.yaml" />
+  </node>
+
+  <node pkg="tf2_ros" type="static_transform_publisher" name="base_link"  args=" 0  0 0  0 0 0 1 base_footprint base_link"/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="body_link"  args=" 0  0 0  0 0 0 1 base_link body_link "/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="imu_link"  args=" 0  0 0  0 0 0 1 base_link imu_link "/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="lidar_link"  args=" 0  0 0  0 0 0 1 base_link lidar_link "/>
+  <node pkg="tf2_ros" type="static_transform_publisher" name="oak_frame"  args=" 0  0 0  0 0 0 1 base_link oak-d-base-frame" />
+
+  <node pkg="second_project" type="tf_publisher" name="tf_publisher" output="screen"/>
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find second_project)/config_mapping.rviz"/>
+
+</launch>
