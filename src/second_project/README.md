@@ -49,7 +49,7 @@ In order to perform a correct navigation we had to simulate the robot in its env
 
 For the encoders we assumed an odometry error of:
 ```
-odom_error [0.005 0.005 0.005 0.005 0.01 0.01]
+odom_error [0.01 0.01 0.01 0.01 0.01 0.01]
 ```
 
 The scan we created for the simulation is described below:
@@ -91,12 +91,12 @@ AMCL is a ros package that make it possible to correct robot odometry and scan e
 ```
 <param name="odom_model_type"           value="diff-corrected"/>
 ```
-The model type has been set to _diff-corrected_, which is a differential drive model with some resolved bugs compared to _diff_
+The model type has been set to _diff-corrected_, which is a differential drive model with some resolved bugs compared to _diff_.
 ```
 <param name="laser_max_beams"           value="640"/>
 <param name="laser_max_range"           value="20.0"/>
 ```
-The above parameters are the characteristics of the robot's sensor, they seem to be a bit low, but that's because we use **diff_corrected** model, which suggests lower values on odometry error, as noted in [this link](https://answers.ros.org/question/227811/tuning-amcls-diff-corrected-and-omni-corrected-odom-models/).
+The above parameters are the characteristics of the robot's sensor.
 ```
 <param name="odom_alpha1"               value="0.005"/>
 <param name="odom_alpha2"               value="0.005"/>
@@ -104,6 +104,7 @@ The above parameters are the characteristics of the robot's sensor, they seem to
 <param name="odom_alpha4"               value="0.005"/>
 ```
 Here we set the odometry error parameters based on the robot encoder, we do not neeed to specify odom_alpha5, that is because is only for omnidirectional robot.
+The parameters seem to be a bit low, but that's because we use **diff_corrected** model, which suggests lower values on odometry error, as noted in [this link](https://answers.ros.org/question/227811/tuning-amcls-diff-corrected-and-omni-corrected-odom-models/).
 ```
 <param name="laser_z_hit"               value="0.8"/>
 <param name="laser_z_rand"              value="0.2"/>
@@ -170,7 +171,7 @@ footprint_model:
     vertices: [[-0.3, -0.2], [-0.3, 0.2], [0.3, 0.2], [0.3, -0.2]]
 
 # Obstace avoidance
-min_obstacle_dist: 0.05   
-
+min_obstacle_dist: 0.03   
+.
 ```
 All the speific configuration can be found in the [local planner configuration file](cfg/teb_local_planner_params.yaml)
