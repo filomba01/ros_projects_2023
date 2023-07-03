@@ -179,7 +179,6 @@ footprint_model:
     vertices: [[-0.3, -0.2], [-0.3, 0.2], [0.3, 0.2], [0.3, -0.2]]
 
 # Obstace avoidance
-min_obstacle_dist: 0.03   
-.
+min_obstacle_dist: 0.03
 ```
 All the speific configuration can be found in the [local planner configuration file](cfg/teb_local_planner_params.yaml)
