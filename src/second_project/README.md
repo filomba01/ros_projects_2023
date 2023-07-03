@@ -127,10 +127,10 @@ For the inflation layer we choose those configurations:
 ```
  inflation_layer:
     enabled:              true
-    cost_scaling_factor:  10.0
-    inflation_radius:     0.5
+    cost_scaling_factor:  30.0
+    inflation_radius:     0.4
 ```
-We tried different cost_scaling_factors, but we noticed that the default parameter is a good choice. For the inflation radius we set 0.5, that's because the inscripted radius of the robot was 0.36, so having a 0.14 of bias has been resulted a good option for a correct obstacle avoidance and path planning.
+We tried different cost_scaling_factors, we reduced the cost in order to obtain smoother navigation. For the inflation radius we set 0.4, that's because the inscripted radius of the robot was 0.36, so having a 0.04 of bias has been resulted a good option for creating a realistic costmap.
 
 ### Global Costmap Parameters
 
@@ -143,7 +143,15 @@ update_frequency: 1.0
 ```
 
 ### Local costmap parameters
+The Local costmap contains the cost of every point of the local map, in a 3x3 meters area. We configured the local costmap as follow, in order to both reduce as possible the computational effort and obtaining good results during navigation.
 
+```
+  width: 3.0
+  height: 3.0
+  resolution: 0.05
+```
+
+The resolution could actually be set to 0.02, but because of the computational effort, we decided to set it to 0.05.
 
 ### Global Planner
 The aim of the global planner is to find the best path from the robot position to the goal.
