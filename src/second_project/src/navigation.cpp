@@ -1,6 +1,7 @@
 #include <ros/ros.h>
 #include <move_base_msgs/MoveBaseAction.h>
 #include <actionlib/client/simple_action_client.h>
+#include <tf/transform_broadcaster.h>
 
 #include <iostream>
 #include <fstream>
@@ -36,7 +37,9 @@ class Navigation{
             goal.target_pose.header.stamp = ros::Time::now(); 
             goal.target_pose.pose.position.x = x;    
             goal.target_pose.pose.position.y = y;    
-            goal.target_pose.pose.orientation.w = tetha; 
+            
+            geometry_msgs::Quaternion theta_quaternions = tf::createQuaternionMsgFromYaw(tetha);
+            goal.target_pose.pose.orientation = theta_quaternions;
 
             ROS_INFO("Sending goal to move_base...");
             client.sendGoal(goal);

@@ -209,8 +209,7 @@ include_directories(
 # catkin_add_nosetests(test)
 
 add_executable(tf_publisher src/tf_publisher.cpp)
-add_executable(simple_nav_ex src/simple_nav_ex.cpp) 
 add_executable(navigation src/navigation.cpp) 
+
 target_link_libraries(tf_publisher ${catkin_LIBRARIES})
 target_link_libraries(navigation ${catkin_LIBRARIES})
-target_link_libraries(simple_nav_ex ${catkin_LIBRARIES})
