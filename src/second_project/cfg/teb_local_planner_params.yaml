@@ -28,7 +28,7 @@ TebLocalPlannerROS:
   yaw_goal_tolerance: 0.1
   free_goal_vel: False
 
-  # Footprint model (Square - .2m side length)
+  # Footprint model 
   
   footprint_model:
     type: "polygon"
