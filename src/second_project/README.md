@@ -96,15 +96,14 @@ The model type has been set to _diff-corrected_, which is a differential drive m
 <param name="laser_max_beams"           value="640"/>
 <param name="laser_max_range"           value="20.0"/>
 ```
-The above parameters are the characteristics of the robot's sensor.
+The above parameters are the characteristics of the robot's sensor, they seem to be a bit low, but that's because we use **diff_corrected** model, which suggests lower values on odometry error, as noted in [this link](https://answers.ros.org/question/227811/tuning-amcls-diff-corrected-and-omni-corrected-odom-models/).
 ```
 <param name="odom_alpha1"               value="0.005"/>
 <param name="odom_alpha2"               value="0.005"/>
 <param name="odom_alpha3"               value="0.005"/>
 <param name="odom_alpha4"               value="0.005"/>
-<param name="odom_alpha5"               value="0.005"/>
 ```
-Here we set the odometry error parameters based on the robot encoder.
+Here we set the odometry error parameters based on the robot encoder, we do not neeed to specify odom_alpha5, that is because is only for omnidirectional robot.
 ```
 <param name="laser_z_hit"               value="0.8"/>
 <param name="laser_z_rand"              value="0.2"/>
