@@ -49,7 +49,7 @@ In order to perform a correct navigation we had to simulate the robot in its env
 
 For the encoders we assumed an odometry error of:
 ```
-odom_error [0.01 0.01 0.01 0.01 0.01 0.01]
+odom_error odom_error [0.005 0.005 0.005 0.005 0.01 0.01]
 ```
 
 The scan we created for the simulation is described below:
